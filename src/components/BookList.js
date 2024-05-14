@@ -4,6 +4,27 @@
 import React, {useEffect, useRef, useState } from 'react';
 import { Heading } from '@chakra-ui/react';
 import { Input } from '@chakra-ui/react';
+import { GoVideo } from "react-icons/go";
+import { Box } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react'
+import { Stack, HStack, VStack } from '@chakra-ui/react'
+import { IconButton } from '@chakra-ui/react'
+import {
+    Icon,
+    Table,
+    Thead,
+    Tbody,
+    Tfoot,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+    useColorMode,
+    useColorModeValue
+    } from '@chakra-ui/react';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
+import { FaSun, FaMoon } from "react-icons/fa";
 
 const BookList = () =>{
     // useState 는 화면 렌더링에 반영됨
@@ -12,6 +33,11 @@ const BookList = () =>{
     const [search, setSearch] = useState(' ');
     // useRef 는 화면 렌더링 반영되지 않는 참조값 레퍼런스
     const pageCount = useRef(1);
+
+    const {colorMode, toggleColorMode} = useColorMode();
+
+    const color = useColorModeValue('red.500', 'red.200');
+    const buttonScheme = useColorModeValue('red.500','red.200');
 
     const fetchVideo = async() => {
         const response = await fetch(
@@ -48,22 +74,61 @@ const BookList = () =>{
 
     return(
         <>
-            <Heading>동영상 검색 목록</Heading>
+            <Box>
+                <Heading color={color}>
+                    <Icon as={GoVideo} boxSize={"1.5em"} />동영상 검색 목록
+                </Heading>
+                {
+                    colorMode === "light" ?
+                    <IconButton icon = {<FaMoon />} onClick={toggleColorMode} size={"lg"}/> :
+                    <IconButton icon = {<FaSun />} onClick={toggleColorMode} size={"lg"}/>
+                }
+                
             <Input type="text" placeholder="검색어 입력" onChange={changeSearch} size="lg" variant="filled"/>
-            <div>
-                {bookList.map(book =>(
-                    <>
-                        <p>{book.title}</p>
-                    </>
-                ))}
-            </div>
-            <ul>
+            <TableContainer>
+                <Table variant={"striped"} colorScheme="pink">
+                    <Thead>
+                        <Tr>
+                            <Th>No</Th>
+                            <Th>Title</Th>
+                            <Th>Author</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {bookList.map((book,index)=>(
+                            <>
+                                <Tr>
+                                    <Td>{(page - 1)* 10 + index +1}</Td>
+                                    <Td>
+                                        <a href="{book.url}">{book.title}</a>
+                                    </Td>
+                                    <Td>{book.url}</Td>
+                                </Tr>
+                            </>
+                        ))}
+                    </Tbody>
+                    <Tfoot></Tfoot>
+                </Table>
+            </TableContainer>
+            
+            <HStack>
                 {Array.from({length : pageCount.current},(_, index)=>(
                     <>
-                        <li onClick={e =>{ setPage(index+1)}}>{index+1}</li>
+                        <Button 
+                            colorScheme={
+                                page === index +1 ? "red" : buttonScheme}
+                            onClick={(e) =>{
+                                setPage(index +1);
+                            }}
+                        >
+                            {index +1}
+                        </Button>
                     </>
                 ))}
-            </ul>
+            
+            </HStack>
+            </Box>
+            
         </>
     )
 }
