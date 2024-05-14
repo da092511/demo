@@ -2,6 +2,8 @@
 // ㄴ Javascript
 
 import React, {useEffect, useRef, useState } from 'react';
+import { Heading } from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react';
 
 const BookList = () =>{
     // useState 는 화면 렌더링에 반영됨
@@ -41,13 +43,13 @@ const BookList = () =>{
 
     useEffect(() =>{
         fetchVideo();
-    }, [page],[search]);
+    }, [page, search]);
     
 
     return(
         <>
-            <h1>동영상 검색 목록</h1>
-            <input type="text" placeholder="검색어 입력" onChange={changeSearch}></input>
+            <Heading>동영상 검색 목록</Heading>
+            <Input type="text" placeholder="검색어 입력" onChange={changeSearch} size="lg" variant="filled"/>
             <div>
                 {bookList.map(book =>(
                     <>
