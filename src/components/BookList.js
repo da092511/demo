@@ -1,14 +1,13 @@
 //JSX
 // ㄴ Javascript
 
-import React, {useEffect, useRef, useState } from 'react';
+import {React, useEffect, useRef, useState } from 'react';
 import { Heading } from '@chakra-ui/react';
 import { Input } from '@chakra-ui/react';
 import { GoVideo } from "react-icons/go";
 import { Box } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react'
-import { Stack, HStack, VStack } from '@chakra-ui/react'
-import { IconButton } from '@chakra-ui/react'
+import { HStack } from '@chakra-ui/react'
 import {
     Icon,
     Table,
@@ -18,30 +17,27 @@ import {
     Tr,
     Th,
     Td,
-    TableCaption,
     TableContainer,
     useColorMode,
-    useColorModeValue
+    useColorModeValue,
+    Text
     } from '@chakra-ui/react';
-import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
-import { FaSun, FaMoon } from "react-icons/fa";
+import { FaBook } from "react-icons/fa";
 
 const BookList = () =>{
     // useState 는 화면 렌더링에 반영됨
     const [bookList,setBookList] = useState([]); //[]빈 배열
     const [page,setPage] = useState(1);
-    const [search, setSearch] = useState(' ');
+    const [search, setSearch] = useState('달고나');
     // useRef 는 화면 렌더링 반영되지 않는 참조값 레퍼런스
     const pageCount = useRef(1);
 
-    const {colorMode, toggleColorMode} = useColorMode();
+    const color = useColorModeValue('pink','pink');
+    const buttonScheme = useColorModeValue('pink','pink');
 
-    const color = useColorModeValue('red.500', 'red.200');
-    const buttonScheme = useColorModeValue('red.500','red.200');
-
-    const fetchVideo = async() => {
+    const fetchBook = async() => {
         const response = await fetch(
-            `	https://dapi.kakao.com/v2/search/vclip?query=${search}&page=${page}`,
+            `	https://dapi.kakao.com/v3/search/book?query=${search}&page=${page}`,
             {
                 method : "GET",
                 headers : {
@@ -68,21 +64,18 @@ const BookList = () =>{
     }
 
     useEffect(() =>{
-        fetchVideo();
+        fetchBook();
     }, [page, search]);
     
 
     return(
         <>
             <Box>
-                <Heading color={color}>
-                    <Icon as={GoVideo} boxSize={"1.5em"} />동영상 검색 목록
+                
+                <Heading color={color} textAlign={"center"} m={"20px"}>
+                    <Icon as={FaBook} boxSize={"1.2em"} mr={'10px'} pt={'10px'}/>동영상 검색 목록
                 </Heading>
-                {
-                    colorMode === "light" ?
-                    <IconButton icon = {<FaMoon />} onClick={toggleColorMode} size={"lg"}/> :
-                    <IconButton icon = {<FaSun />} onClick={toggleColorMode} size={"lg"}/>
-                }
+                
                 
             <Input type="text" placeholder="검색어 입력" onChange={changeSearch} size="lg" variant="filled"/>
             <TableContainer>
@@ -92,6 +85,7 @@ const BookList = () =>{
                             <Th>No</Th>
                             <Th>Title</Th>
                             <Th>Author</Th>
+                            <Th>Publisher</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -102,7 +96,8 @@ const BookList = () =>{
                                     <Td>
                                         <a href="{book.url}">{book.title}</a>
                                     </Td>
-                                    <Td>{book.url}</Td>
+                                    <Td>{book.authors}</Td>
+                                    <Td>{book.publisher}</Td>
                                 </Tr>
                             </>
                         ))}
