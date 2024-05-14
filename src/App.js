@@ -1,15 +1,17 @@
 // JSX
 // ㄴ Javascript XML
 
-import BookList from "./components/BookList";
+import { RouterProvider } from "react-router-dom";
+//import BookList from "./components/BookList";
+import router from "./router";
 //import MyComponent from "./components/MyComponent";
 
 function App() {
   return (
-    <BookList />
+    //<BookList />
+    <RouterProvider router={router}/>
   );
 }
-
 //const MyCompoment = () =>{
   
 //};
