@@ -33,7 +33,7 @@ const BookList = () =>{
     const pageCount = useRef(1);
 
     const color = useColorModeValue('pink','pink');
-    const buttonScheme = useColorModeValue('pink','pink');
+    const buttonScheme = useColorModeValue('yellow','yellow');
 
     const fetchBook = async() => {
         const response = await fetch(
@@ -72,8 +72,8 @@ const BookList = () =>{
         <>
             <Box>
                 
-                <Heading color={color} textAlign={"center"} m={"20px"}>
-                    <Icon as={FaBook} boxSize={"1.2em"} mr={'10px'} pt={'10px'}/>동영상 검색 목록
+                <Heading color={color} textAlign={"center"} m={"20px"} mb={'50px'}>
+                    <Icon as={FaBook} boxSize={"1.2em"} mr={'10px'} pt={'10px'}/>도서 검색 목록
                 </Heading>
                 
                 
@@ -94,9 +94,9 @@ const BookList = () =>{
                                 <Tr>
                                     <Td>{(page - 1)* 10 + index +1}</Td>
                                     <Td>
-                                        <a href="{book.url}">{book.title}</a>
+                                        <a href={book.url}>{book.title}</a>
                                     </Td>
-                                    <Td>{book.authors}</Td>
+                                    <Td>{book.authors.length === 0 ? "저자미상" : book.authors }</Td>
                                     <Td>{book.publisher}</Td>
                                 </Tr>
                             </>
@@ -111,7 +111,7 @@ const BookList = () =>{
                     <>
                         <Button 
                             colorScheme={
-                                page === index +1 ? "red" : buttonScheme}
+                                page === index +1 ? "pink" : buttonScheme}
                             onClick={(e) =>{
                                 setPage(index +1);
                             }}
