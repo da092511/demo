@@ -23,6 +23,7 @@ import {
     useColorModeValue
     } from '@chakra-ui/react';
 import { FaSun, FaMoon } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 const VideoList = () =>{
     // useState 는 화면 렌더링에 반영됨
@@ -66,12 +67,11 @@ const VideoList = () =>{
     useEffect(() =>{
         fetchVideo();
     }, [page, search]);
-    
 
     return(
         <>
             <Box>
-                <Heading color={color} textAlign={"center"} m={"20px"}>
+                <Heading color={color} textAlign={"center"} m={"20px"} mb={'50px'}>
                     <Icon as={GoVideo} boxSize={"1em"} mr={'20px'} />동영상 검색 목록
                 </Heading>
                 
@@ -86,14 +86,15 @@ const VideoList = () =>{
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {bookList.map((book,index)=>(
+                        {bookList.map((video,index)=>(
                             <>
                                 <Tr>
                                     <Td>{(page - 1)* 10 + index +1}</Td>
-                                    <Td><img src={book.thumbnail} width='200px' height='200px'></img></Td>
-                                    <Td>
-                                        <a href="{book.url}">{book.title}</a>
-                                    </Td>
+                                        <Td><img src={video.thumbnail} w='300px' h='300px'></img></Td>
+                                        <Td>
+                                            <a>{video.title}</a>
+                                        </Td>
+
                                 </Tr>
                             </>
                         ))}
